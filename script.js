@@ -1,35 +1,50 @@
 let intervalId = null;
 const container = document.getElementById("results");
 let count = 0;
+let arrayNumber = [];
 
 function generateNumber() {
-    if (count >= 5) {
+    let add = true;
+    count++;
+    let randomNumber = Math.floor(Math.random() * (61 - 1) + 1);
+
+    for (let i = 0; i < arrayNumber.length; i++) {
+        if (arrayNumber[i] === randomNumber) {
+            add = false;
+        }
+    }
+
+    if (add) {
+        arrayNumber.push(randomNumber);
+    } else {
+        count--
+        return
+    }
+
+    let div = document.createElement("div");
+    div.setAttribute("class", "numbers");
+    const text = document.createTextNode(randomNumber);
+    div.appendChild(text);
+    container.append(div);
+
+    if (count === 6) {
         clearInterval(intervalId);
         intervalId = null;
+        arrayNumber = [];
+        return
     }
-    console.log("number")
-    let randomNumber = Math.floor(Math.random() * 60)
-    let div = document.createElement("div")
-    div.setAttribute("class", "numbers")
-    const text = document.createTextNode(randomNumber)
-    div.appendChild(text)
-    container.append(div)
-    count++;
-    console.log(count)
 }
 
 function displayNumbers() {
-
     if (!intervalId) {
         count = 0;
         container.innerHTML = "";
-        intervalId = setInterval(() => generateNumber(), 1000)
+        intervalId = setInterval(() => generateNumber(), 1000);
     }
-
 }
 
 function main() {
-    document.getElementById("btn").addEventListener("click", displayNumbers)
+    document.getElementById("btn").addEventListener("click", displayNumbers);
 }
 
 main();
